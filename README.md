@@ -473,6 +473,106 @@ La aplicación estará disponible en:
 http://localhost:8080
 ```
 
+### Ejecución con Docker
+
+La aplicación puede ejecutarse dentro de un contenedor Docker utilizando una imagen basada en Eclipse Temurin Java 17.
+
+#### Requisitos previos
+
+- Docker Desktop instalado y en ejecución.
+- Git para clonar el repositorio.
+- Java 17 y Gradle Wrapper para generar el JAR localmente.
+
+#### 1. Generar el archivo JAR
+
+Desde la raíz del proyecto, ejecuta:
+
+```bash
+./gradlew clean test bootJar
+```
+
+Este comando ejecuta las pruebas automatizadas y genera el archivo JAR en `build/libs/`.
+
+#### 2. Construir la imagen Docker
+
+```bash
+docker build -t solicitudes-api .
+```
+
+El comando utiliza el `Dockerfile` del proyecto para construir la imagen `solicitudes-api`.
+
+#### 3. Ejecutar el contenedor
+
+```bash
+docker run -d --name solicitudes-api -p 8080:8080 solicitudes-api
+```
+
+La aplicación quedará disponible en el puerto `8080` de la máquina local.
+
+#### 4. Verificar la ejecución
+
+Consultar el estado del contenedor:
+
+```bash
+docker ps
+```
+
+Consultar los registros de la aplicación:
+
+```bash
+docker logs solicitudes-api
+```
+
+#### 5. Acceder a la API
+
+- **Swagger UI:** http://localhost:8080/swagger-ui/index.html
+- **Documentación OpenAPI:** http://localhost:8080/v3/api-docs
+- **Endpoint de solicitudes:** http://localhost:8080/api/solicitudes
+
+#### 6. Detener y reiniciar el contenedor
+
+Detener la aplicación:
+
+```bash
+docker stop solicitudes-api
+```
+
+Volver a iniciarla:
+
+```bash
+docker start solicitudes-api
+```
+
+Eliminar el contenedor cuando ya no sea necesario:
+
+```bash
+docker rm -f solicitudes-api
+```
+
+La eliminación del contenedor no elimina automáticamente la imagen Docker.
+
+#### 7. Reconstruir la imagen después de modificar el código
+
+Cuando se realicen cambios en el código fuente, ejecutar:
+
+```bash
+./gradlew clean test bootJar
+docker build -t solicitudes-api .
+```
+
+Si el contenedor anterior existe, eliminarlo y crear uno nuevo con la imagen actualizada:
+
+```bash
+docker rm -f solicitudes-api
+docker run -d --name solicitudes-api -p 8080:8080 solicitudes-api
+```
+
+#### Consideraciones
+
+- El puerto `8080` debe estar disponible en la máquina local.
+- La aplicación utiliza H2 como base de datos. La persistencia de los datos depende de la configuración de H2 y de cómo se almacene la información.
+- El archivo `.dockerignore` excluye archivos innecesarios del contexto de construcción de la imagen.
+
 ## 12. Pruebas automatizadas
 
 La solución incluye pruebas automatizadas para la lógica de negocio y la capa web.
