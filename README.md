@@ -62,9 +62,8 @@ JPA / H2
 
 ### Estructura principal
 
-src/main/java/com/PruebaTecnica/solicitudes/
-
 ```text
+src/main/java/com/PruebaTecnica/solicitudes/
 ├── controller/
 ├── dto/
 ├── entity/
@@ -150,7 +149,9 @@ El campo `ultimosCuatroDigitos` debe contener exactamente cuatro caracteres num�
 
 Ejemplo válido:
 
+```text
 4589
+```
 
 Ejemplos inválidos:
 
@@ -164,9 +165,9 @@ Se utiliza `String` en lugar de un tipo numérico para conservar posibles ceros 
 
 Ejemplo:
 
+```text
 0123
-
-debe conservarse como cuatro dígitos.
+```
 
 ### 6.2 Solicitudes activas duplicadas
 
@@ -185,7 +186,9 @@ Por lo tanto, si ya existe una solicitud activa para el mismo `clienteId` y `ult
 
 Toda solicitud nueva inicia automáticamente en:
 
+```text
 RECIBIDA
+```
 
 El estado inicial es controlado por el backend y no es recibido desde el request de creación.
 
@@ -222,11 +225,15 @@ Ejemplo:
 
 La API utiliza la siguiente ruta base:
 
+```text
 /api/solicitudes
+```
 
 ### 7.1 Crear solicitud
 
+```text
 POST /api/solicitudes
+```
 
 Request:
 
@@ -240,7 +247,9 @@ Request:
 
 Respuesta exitosa:
 
+```text
 HTTP 201 Created
+```
 
 Ejemplo:
 
@@ -259,7 +268,9 @@ Ejemplo:
 
 ### 7.2 Obtener solicitud por ID
 
+```text
 GET /api/solicitudes/{id}
+```
 
 Ejemplo:
 
@@ -269,11 +280,15 @@ GET /api/solicitudes/1
 
 Respuesta exitosa:
 
+```text
 HTTP 200 OK
+```
 
 Si la solicitud no existe:
 
+```text
 HTTP 404 Not Found
+```
 
 ### 7.3 Listar solicitudes
 
@@ -289,7 +304,9 @@ HTTP 200 OK
 
 ### 7.4 Filtrar solicitudes por estado
 
+```text
 GET /api/solicitudes?estado=RECIBIDA
+```
 
 Los estados disponibles son:
 
@@ -302,11 +319,15 @@ RECHAZADA
 
 ### 7.5 Cambiar estado
 
+```text
 PATCH /api/solicitudes/{id}/estado
+```
 
 Ejemplo:
 
+```text
 PATCH /api/solicitudes/1/estado
+```
 
 Request:
 
@@ -527,19 +548,3 @@ La aplicación cuenta con:
 - Pruebas automatizadas.
 - Arquitectura por capas.
 - Gradle Wrapper para facilitar la ejecución.
-
-La suite completa de pruebas puede ejecutarse mediante:
-
-./gradlew clean test
-
-## 15. Comprobación de la solución
-
-Antes de entregar el proyecto se recomienda ejecutar:
-
-```text
-./gradlew clean test
-```
-
-Una ejecución exitosa debe finalizar con:
-
-BUILD SUCCESSFUL
