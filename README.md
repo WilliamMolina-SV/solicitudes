@@ -352,7 +352,25 @@ Para rechazar:
 }
 ```
 
-## 8. Manejo de errores
+## 8. Documentación OpenAPI / Swagger
+
+La API cuenta con documentación interactiva mediante Springdoc OpenAPI y Swagger UI.
+
+Con la aplicación ejecutándose localmente:
+
+- Swagger UI: `http://localhost:8080/swagger-ui/index.html`
+- OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+
+Desde Swagger UI se pueden consultar y probar los endpoints de la API.
+
+Endpoints documentados:
+
+- `POST /api/solicitudes`
+- `GET /api/solicitudes/{id}`
+- `GET /api/solicitudes`
+- `PATCH /api/solicitudes/{id}/estado`
+
+## 9. Manejo de errores
 
 La aplicación utiliza `@RestControllerAdvice` para centralizar el manejo de excepciones.
 
@@ -396,7 +414,7 @@ Ejemplos:
 - Transición de estado no permitida.
 - Rechazo sin motivo.
 
-## 9. Configuración de base de datos
+## 10. Configuración de base de datos
 
 Para facilitar la ejecución de la evaluación se utiliza H2 como base de datos relacional en memoria.
 
@@ -412,7 +430,7 @@ La estructura de las tablas es generada automáticamente por Hibernate al inicia
 
 La aplicación no requiere una base de datos externa para ejecutarse.
 
-## 10. Ejecución del proyecto
+## 11. Ejecución del proyecto
 
 ### Clonar el repositorio
 
@@ -455,7 +473,7 @@ La aplicación estará disponible en:
 http://localhost:8080
 ```
 
-## 11. Pruebas automatizadas
+## 12. Pruebas automatizadas
 
 La solución incluye pruebas automatizadas para la lógica de negocio y la capa web.
 
@@ -491,7 +509,7 @@ Para ejecutar la suite completa:
 
 ./gradlew clean test
 
-## 12. Decisiones técnicas
+## 13. Decisiones técnicas
 
 ### Separación de responsabilidades
 
@@ -523,7 +541,7 @@ Las validaciones de entrada se realizan mediante Jakarta Bean Validation.
 
 Las excepciones de negocio y validación se manejan mediante `GlobalExceptionHandler`, evitando duplicar lógica de manejo de errores en los Controllers.
 
-## 13. Supuestos
+## 14. Supuestos
 
 - `clienteId` se recibe como texto.
 - Los últimos cuatro dígitos se almacenan únicamente como los cuatro caracteres finales de la tarjeta.
@@ -534,7 +552,7 @@ Las excepciones de negocio y validación se manejan mediante `GlobalExceptionHan
 - No se implementa autenticación ni autorización, ya que no forman parte de los requerimientos obligatorios de la evaluación.
 - No se implementan funcionalidades adicionales que no sean necesarias para los requerimientos principales.
 
-## 14. Estado del proyecto
+## 15. Estado del proyecto
 
 La aplicación cuenta con:
 
