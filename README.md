@@ -30,6 +30,7 @@ La solución utiliza una arquitectura por capas para mantener separadas las resp
 - JUnit 5
 - Mockito
 - Jakarta Bean Validation
+- Springdoc OpenAPI / Swagger UI
 
 ---
 
@@ -49,6 +50,7 @@ El proyecto incluye Gradle Wrapper, por lo que no es necesario instalar Gradle d
 
 La aplicación utiliza una arquitectura por capas:
 
+```text
 Controller
     ↓
 Service
@@ -56,11 +58,13 @@ Service
 Repository
     ↓
 JPA / H2
+```
 
 ### Estructura principal
 
 src/main/java/com/PruebaTecnica/solicitudes/
 
+```text
 ├── controller/
 ├── dto/
 ├── entity/
@@ -70,6 +74,7 @@ src/main/java/com/PruebaTecnica/solicitudes/
 ├── repository/
 ├── service/
 └── SolicitudesApplication.java
+```
 
 ### Responsabilidades
 
@@ -120,18 +125,22 @@ La entidad `Solicitud` contiene los siguientes campos:
 
 Los motivos permitidos son:
 
+```text
 PERDIDA
 DANIO
 VENCIMIENTO
+```
 
 ### Estados
 
 Los estados permitidos son:
 
+```text
 RECIBIDA
 EN_PROCESO
 COMPLETADA
 RECHAZADA
+```
 
 ## 6. Reglas de negocio
 
@@ -145,9 +154,11 @@ Ejemplo válido:
 
 Ejemplos inválidos:
 
+```text
 123
 12345
 12A4
+```
 
 Se utiliza `String` en lugar de un tipo numérico para conservar posibles ceros iniciales.
 
@@ -163,8 +174,10 @@ No se permite más de una solicitud activa para el mismo cliente y la misma tarj
 
 Se consideran estados activos:
 
+```text
 RECIBIDA
 EN_PROCESO
+```
 
 Por lo tanto, si ya existe una solicitud activa para el mismo `clienteId` y `ultimosCuatroDigitos`, una nueva solicitud será rechazada.
 
@@ -180,6 +193,7 @@ El estado inicial es controlado por el backend y no es recibido desde el request
 
 Las transiciones permitidas son:
 
+```text
 RECIBIDA
  ├──> EN_PROCESO
  └──> RECHAZADA
@@ -187,6 +201,7 @@ RECIBIDA
 EN_PROCESO
  ├──> COMPLETADA
  └──> RECHAZADA
+```
 
 Las solicitudes en estado `COMPLETADA` o `RECHAZADA` no pueden modificarse.
 
@@ -196,10 +211,12 @@ Para cambiar una solicitud a `RECHAZADA` es obligatorio proporcionar `motivoRech
 
 Ejemplo:
 
+```text
 {
   "nuevoEstado": "RECHAZADA",
   "motivoRechazo": "La tarjeta ya fue reemplazada"
 }
+```
 
 ## 7. API REST
 
@@ -213,11 +230,13 @@ POST /api/solicitudes
 
 Request:
 
+```text
 {
   "clienteId": "CLI-10025",
   "ultimosCuatroDigitos": "4589",
   "motivo": "PERDIDA"
 }
+```
 
 Respuesta exitosa:
 
@@ -225,6 +244,7 @@ HTTP 201 Created
 
 Ejemplo:
 
+```text
 {
   "id": 1,
   "clienteId": "CLI-10025",
@@ -235,6 +255,7 @@ Ejemplo:
   "fechaActualizacion": "2026-10-08T20:00:00",
   "motivoRechazo": null
 }
+```
 
 ### 7.2 Obtener solicitud por ID
 
@@ -242,7 +263,9 @@ GET /api/solicitudes/{id}
 
 Ejemplo:
 
+```text
 GET /api/solicitudes/1
+```
 
 Respuesta exitosa:
 
@@ -254,11 +277,15 @@ HTTP 404 Not Found
 
 ### 7.3 Listar solicitudes
 
+```text
 GET /api/solicitudes
+```
 
 Respuesta:
 
+```text
 HTTP 200 OK
+```
 
 ### 7.4 Filtrar solicitudes por estado
 
@@ -266,10 +293,12 @@ GET /api/solicitudes?estado=RECIBIDA
 
 Los estados disponibles son:
 
+```text
 RECIBIDA
 EN_PROCESO
 COMPLETADA
 RECHAZADA
+```
 
 ### 7.5 Cambiar estado
 
@@ -281,20 +310,26 @@ PATCH /api/solicitudes/1/estado
 
 Request:
 
+```text
 {
   "nuevoEstado": "EN_PROCESO"
 }
+```
 
 Respuesta exitosa:
 
+```text
 HTTP 200 OK
+```
 
 Para rechazar:
 
+```text
 {
   "nuevoEstado": "RECHAZADA",
   "motivoRechazo": "La tarjeta ya fue reemplazada"
 }
+```
 
 ## 8. Manejo de errores
 
@@ -306,12 +341,14 @@ Se utiliza para errores de validación de los datos recibidos.
 
 Ejemplo:
 
+```text
 {
   "timestamp": "2026-10-08T20:00:00",
   "status": 400,
   "error": "Bad Request",
   "message": "ultimosCuatroDigitos: Los últimos cuatro dígitos deben contener exactamente cuatro números"
 }
+```
 
 ### 404 Not Found
 
@@ -319,12 +356,14 @@ Se devuelve cuando no existe una solicitud con el ID proporcionado.
 
 Ejemplo:
 
+```text
 {
   "timestamp": "2026-10-08T20:00:00",
   "status": 404,
   "error": "Not Found",
   "message": "No se encontró la solicitud con id: 999"
 }
+```
 
 ### 409 Conflict
 
@@ -342,9 +381,11 @@ Para facilitar la ejecución de la evaluación se utiliza H2 como base de datos 
 
 Configuración principal:
 
+```text
 Motor: H2
 Modo: memoria
 Base de datos: solicitudesdb
+```
 
 La estructura de las tablas es generada automáticamente por Hibernate al iniciar la aplicación.
 
@@ -354,33 +395,44 @@ La aplicación no requiere una base de datos externa para ejecutarse.
 
 ### Clonar el repositorio
 
-Reemplazar `<URL_DEL_REPOSITORIO>` por la URL correspondiente:
-
-git clone <URL_DEL_REPOSITORIO>
-
+```text
+git clone https://github.com/WilliamMolina-SV/solicitudes.git
+```
 ### Ingresar al proyecto
 
+```text
 cd solicitudes
+```
 
 ### Compilar
 
+```text
 ./gradlew build
+```
 
 ### Ejecutar pruebas
 
+```text
 ./gradlew test
+```
 
 ### Ejecutar todas las pruebas desde cero
 
+```text
 ./gradlew clean test
+```
 
 ### Ejecutar la aplicación
 
+```text
 ./gradlew bootRun
+```
 
 La aplicación estará disponible en:
 
+```text
 http://localhost:8080
+```
 
 ## 11. Pruebas automatizadas
 
